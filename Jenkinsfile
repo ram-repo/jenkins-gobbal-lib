@@ -15,7 +15,9 @@ pipeline {
     stages{
         stage('create multibranch'){
             steps{
+                scripts{
                 repobuilder.createNewJenkinsJobWithMultiBranch("${params.projectsFolder}", "${params.projectName}", "${params.destProject}", "${params.destGit}", "${params.githubid}")
+                }
             }
         }
     }
