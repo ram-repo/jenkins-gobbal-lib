@@ -6,7 +6,7 @@ def call() {
   def jenkinsSlaveRoleArn = false
 
   if (params.configFile != null){
-    jenkinsSlaveRoleArn = "arn:aws:iam::" + params.configFile.split("/")[1] + ":role/bre-jenkins-slave"
+    jenkinsSlaveRoleArn = "arn:aws:iam::" + params.configFile.split("/")[1] + ":role/aaaaa-jenkins-slave"
   } else {
     // Printing message that first time run and params are not taken into effect
     // https://issues.jenkins-ci.org/browse/JENKINS-40574 - it is marked resolved but the last comment says it doesn't work for declaritive pipelines
@@ -29,12 +29,12 @@ def call() {
               - name: artifactory
             containers:
               - name: build-tools
-                image: artifactory.bre.mcd.com/docker/bred-build-tools:${buildToolsImageVersion}
+                image: artifactory.aaaaa.aaaaacompany.com/docker/aaaa-build-tools:${buildToolsImageVersion}
                 command:
                   - cat
                 tty: true
               - name: lambda-app-builder
-                image: artifactory.bre.mcd.com/docker/bre-lambda-app-builder:${buildToolsLambdaAppImageVersion}
+                image: artifactory.aaaaa.aaaaacompany.com/docker/aaaaa-lambda-app-builder:${buildToolsLambdaAppImageVersion}
                 command:
                   - cat
                 tty: true
@@ -217,11 +217,11 @@ def call() {
                   def projectName = env.JOB_NAME.split("/")[1]
                   def orgName = projectName.split("-")[0,1].join()
                   sh """cat << EOF > gradle.properties
-sonar.projectKey=com.mcd.${orgName}:${projectName}
+sonar.projectKey=com.aaaaacompany.${orgName}:${projectName}
 sonar.projectName=${projectName}
 EOF"""
                   sh "chmod +x gradlew"
-                  sh  "./gradlew sonarqube -Dsonar.projectKey=com.mcd.${orgName}:${projectName} -Dsonar.projectName=${projectName}"
+                  sh  "./gradlew sonarqube -Dsonar.projectKey=com.aaaaacompany.${orgName}:${projectName} -Dsonar.projectName=${projectName}"
                 } else if (fileExists("pom.xml")) {
                   sh 'mvn -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.http.retryHandler.count=10 clean install sonar:sonar -X'
                 } else if (fileExists("package.json")){
@@ -230,7 +230,7 @@ EOF"""
                   def orgName = projectName.split("-")[0,1].join()
                   def test-report-path = test-report.xml
                   sh """cat << EOF > sonar-project.properties
-sonar.projectKey=com.mcd.${orgName}:${projectName}
+sonar.projectKey=com.aaaaacompany.${orgName}:${projectName}
 sonar.projectName=${projectName}
 sonar.testExecutionReportPaths=${test-report-path}
 sonar.tests=src
@@ -239,7 +239,7 @@ EOF"""
                   sh "npm install"
                   sh "npm run coverage-lcov"
                   sh "${scannerHome}/bin/sonar-scanner \
-                  -Dsonar.projectKey=com.mcd.${orgName}:${projectName} \
+                  -Dsonar.projectKey=com.aaaaacompany.${orgName}:${projectName} \
                   -Dsonar.projectName=${projectName} -Dsonar.testExecutionReportPaths=${test-report-path} \
                   -Dsonar.tests=src \
                   -Dsonar.javascript.lcov.reportPaths=test-coverage/lcov.info"
@@ -248,13 +248,13 @@ EOF"""
                   def projectName = env.JOB_NAME.split("/")[1]
                   def orgName = projectName.split("-")[0,1].join()
                   sh """cat << EOF > sonar-project.properties
-sonar.projectKey=com.mcd.${orgName}:${projectName}
+sonar.projectKey=com.aaaaacompany.${orgName}:${projectName}
 sonar.projectName=${projectName}
 sonar.sourceEncoding=UTF-8
 sonar.python.coverage.reportPaths=Coverage.xml
 EOF"""            
                   sh "{scannerHome}/bin/sonar-scanner -X \
-                  -Dsonar.projectKey=com.mcd.${orgName}:${projectName} \
+                  -Dsonar.projectKey=com.aaaaacompany.${orgName}:${projectName} \
                   -Dsonar.projectName=${projectName} \
                   -Dsonar.sourceEncoding=UTF-8 \
                   -Dsonar.python.coverage.reportPaths=Coverage.xml"
@@ -263,7 +263,7 @@ EOF"""
                   def projectName = env.JOB_NAME.split("/")[1]
                   def orgName = projectName.split("-")[0,1].join()
                   sh """cat << EOF > sonar-project.properties
-sonar.projectKey=com.mcd.${orgName}:${projectName}
+sonar.projectKey=com.aaaaacompany.${orgName}:${projectName}
 sonar.projectName=${projectName}
 EOF"""
                 sh "${scannerHome}/bin/sonar-scanner"
