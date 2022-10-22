@@ -1,5 +1,5 @@
 @Library('common-lib') _
-def printfunc = new sample()
+
 def call() {
     pipeline {
         agent any
