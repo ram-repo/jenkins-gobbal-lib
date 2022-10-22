@@ -1,5 +1,3 @@
-@Library('common-lib') _
-
 def call() {
     pipeline {
         agent any
